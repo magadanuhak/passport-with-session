@@ -2,7 +2,12 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Cors;
+use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\ForceJsonResponse;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Session\Middleware\StartSession;
 
 class Kernel extends HttpKernel
 {
@@ -40,9 +45,14 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ForceJsonResponse::class,
+            Cors::class
         ],
     ];
 
